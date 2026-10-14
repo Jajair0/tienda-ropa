@@ -12,6 +12,7 @@
         <h1>Urban Style</h1>
 
         <nav>
+            <a href="pedidos.html">Mis pedidos</a>
             <a href="index.html">Inicio</a>
             <a href="productos.html">Productos</a>
             <a href="carrito.html">Carrito</a>
@@ -21,7 +22,37 @@
 
     <main>
         <h2>Nuestros productos</h2>
+<div class="filtros-productos"> 
+    <input
+     type="text" 
+     id="buscador-productos" 
+     placeholder="Buscar productos..."
+      > 
+    <select id="filtro-categoria">
+      <option value="todas"> 
+         Todas las categorías 
+    </option>
 
+     <option value="Polos"> 
+        Polos 
+    </option> 
+    
+    <option value="Pantalones"> 
+        Pantalones 
+    </option> 
+    
+    <option value="Casacas"> 
+        Casacas 
+    </option> 
+    
+    <option value="Vestidos"> 
+        Vestidos 
+    
+    </option> 
+
+   </select> 
+
+</div>
         <div id="lista-productos"></div>
     </main>
 
@@ -30,6 +61,6 @@
     </footer>
 
     <script src="js/app.js"></script>
-
+<script src="js/usuario.js"></script>
 </body>
 </html>

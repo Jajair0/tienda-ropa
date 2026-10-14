@@ -2,88 +2,183 @@ let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
 function mostrarCarrito() {
 
-    const lista = document.getElementById('lista-carrito');
-    const resumen = document.getElementById('resumen-carrito');
+    const lista =
+        document.getElementById('lista-carrito');
+
+    const resumen =
+        document.getElementById('resumen-carrito');
 
     lista.innerHTML = '';
     resumen.innerHTML = '';
 
+
     if (carrito.length === 0) {
 
         lista.innerHTML = `
+
             <div class="carrito-vacio">
-                <h3>Tu carrito está vacío</h3>
-                <p>Agrega algunos productos para continuar.</p>
+
+                <div class="carrito-vacio-icono">
+                    🛒
+                </div>
+
+                <h3>
+                    Tu carrito está vacío
+                </h3>
+
+                <p>
+                    Todavía no has agregado
+                    productos a tu carrito.
+                </p>
 
                 <a href="productos.html">
-                    Ver productos
+                    Explorar productos
                 </a>
+
             </div>
+
         `;
 
         return;
     }
 
+
     let total = 0;
 
-    carrito.forEach((producto, indice) => {
 
-        const subtotal = producto.precio * producto.cantidad;
+    carrito.forEach(
+        (producto, indice) => {
 
-        total += subtotal;
+            const subtotal =
+                producto.precio *
+                producto.cantidad;
 
-        const productoHTML = document.createElement('div');
+            total += subtotal;
 
-        productoHTML.classList.add('producto-carrito');
 
-        productoHTML.innerHTML = `
-            <div>
-                <h3>${producto.nombre}</h3>
-                <p>Talla: ${producto.talla}</p>
-                <p>Precio: S/ ${producto.precio.toFixed(2)}</p>
-            </div>
+            const productoHTML =
+                document.createElement('div');
 
-            <div class="cantidad">
+            productoHTML.classList.add(
+                'producto-carrito'
+            );
 
-                <button onclick="disminuirCantidad(${indice})">
-                    -
-                </button>
 
-                <span>${producto.cantidad}</span>
+            productoHTML.innerHTML = `
 
-                <button onclick="aumentarCantidad(${indice})">
-                    +
-                </button>
+                <div class="carrito-producto-info">
 
-            </div>
+                    <div class="carrito-producto-icono">
+                        👕
+                    </div>
 
-            <div>
-                <p>
-                    Subtotal:
-                    <strong>S/ ${subtotal.toFixed(2)}</strong>
-                </p>
+                    <div>
 
-                <button onclick="eliminarProducto(${indice})">
+                        <h3>
+                            ${producto.nombre}
+                        </h3>
+
+                        <p>
+                            Talla:
+                            <strong>
+                                ${producto.talla}
+                            </strong>
+                        </p>
+
+                        <p class="carrito-precio-unitario">
+                            S/
+                            ${producto.precio.toFixed(2)}
+                            por unidad
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="cantidad">
+
+                    <button
+                        onclick="disminuirCantidad(${indice})"
+                    >
+                        −
+                    </button>
+
+                    <span>
+                        ${producto.cantidad}
+                    </span>
+
+                    <button
+                        onclick="aumentarCantidad(${indice})"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+
+                <div class="carrito-subtotal">
+
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <strong>
+                        S/
+                        ${subtotal.toFixed(2)}
+                    </strong>
+
+                </div>
+
+
+                <button
+                    class="btn-eliminar"
+                    onclick="eliminarProducto(${indice})"
+                >
                     Eliminar
                 </button>
-            </div>
-        `;
 
-        lista.appendChild(productoHTML);
-    });
+            `;
+
+
+            lista.appendChild(
+                productoHTML
+            );
+
+        }
+    );
+
 
     resumen.innerHTML = `
+
         <div class="total-carrito">
 
-            <h3>Total: S/ ${total.toFixed(2)}</h3>
+            <div>
 
-            <button onclick="finalizarCompra()">
+                <span>
+                    Total de tu compra
+                </span>
+
+                <h3>
+                    S/ ${total.toFixed(2)}
+                </h3>
+
+            </div>
+
+
+            <button
+                class="btn-finalizar"
+                onclick="finalizarCompra()"
+            >
                 Finalizar compra
             </button>
 
         </div>
+
     `;
 }
+
+
 
 
 function aumentarCantidad(indice) {
@@ -139,9 +234,18 @@ async function finalizarCompra() {
         alert('El carrito está vacío');
         return;
     }
+    const usuario = JSON.parse(
+    localStorage.getItem('usuario')
+);
+
+if (!usuario) {
+    alert('Debes iniciar sesión para realizar una compra');
+    window.location.href = 'login.html';
+    return;
+}
 
     const datosPedido = {
-        id_usuario: 1,
+        id_usuario: usuario.id_usuario,
         productos: carrito.map(producto => ({
             id_producto: producto.id_producto,
             cantidad: producto.cantidad

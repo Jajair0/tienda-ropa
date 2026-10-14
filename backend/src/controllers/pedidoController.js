@@ -113,7 +113,39 @@ const crearPedido = async (req, res) => {
         conexion.release();
     }
 };
+const obtenerPedidosPorUsuario = async (req, res) => {
 
+    const { id_usuario } = req.params;
+
+    try {
+
+        const resultado = await pool.query(
+            `SELECT
+                id_pedido,
+                fecha_pedido,
+                estado,
+                total
+             FROM pedidos
+             WHERE id_usuario = $1
+             ORDER BY fecha_pedido DESC`,
+            [id_usuario]
+        );
+
+        res.json(resultado.rows);
+
+    } catch (error) {
+
+        console.error(
+            'Error al obtener pedidos:',
+            error
+        );
+
+        res.status(500).json({
+            mensaje: 'Error al obtener los pedidos'
+        });
+    }
+};
 module.exports = {
-    crearPedido
+    crearPedido,
+    obtenerPedidosPorUsuario
 };

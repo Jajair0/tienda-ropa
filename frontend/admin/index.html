@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Panel de Administración - Urban Style</title>
+
+    <link
+        rel="stylesheet"
+        href="../css/estilos.css"
+    >
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>Urban Style | Admin</h1>
+
+        <nav>
+
+            <a href="../index.html">
+                Tienda
+            </a>
+
+            <button
+                class="btn-cerrar-sesion"
+                onclick="cerrarSesionAdmin()"
+            >
+                Cerrar sesión
+            </button>
+
+        </nav>
+
+    </header>
+
+
+    <main class="admin-container">
+
+        <div class="admin-titulo">
+
+            <div>
+
+                <p class="admin-etiqueta">
+                    PANEL DE ADMINISTRACIÓN
+                </p>
+
+                <h2>
+                    Dashboard
+                </h2>
+
+                <p>
+                    Gestiona Urban Style desde un solo lugar.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <section class="admin-estadisticas">
+
+            <div class="admin-stat">
+
+                <div class="admin-stat-icono">
+                    👥
+                </div>
+
+                <div>
+
+                    <span>
+                        Usuarios
+                    </span>
+
+                    <strong id="total-usuarios">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-stat">
+
+                <div class="admin-stat-icono">
+                    👕
+                </div>
+
+                <div>
+
+                    <span>
+                        Productos
+                    </span>
+
+                    <strong id="total-productos">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-stat">
+
+                <div class="admin-stat-icono">
+                    🛒
+                </div>
+
+                <div>
+
+                    <span>
+                        Pedidos
+                    </span>
+
+                    <strong id="total-pedidos">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-stat">
+
+                <div class="admin-stat-icono">
+                    💰
+                </div>
+
+                <div>
+
+                    <span>
+                        Ventas
+                    </span>
+
+                    <strong id="total-ventas">
+                        S/ 0.00
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="admin-menu">
+
+            <h2>
+                Gestión de la tienda
+            </h2>
+
+
+            <div class="admin-menu-grid">
+
+                <a
+                    href="productos.html"
+                    class="admin-menu-card"
+                >
+
+                    <span>
+                        👕
+                    </span>
+
+                    <h3>
+                        Productos
+                    </h3>
+
+                    <p>
+                        Agregar, editar y eliminar productos.
+                    </p>
+
+                </a>
+
+
+                <a
+                    href="pedidos.html"
+                    class="admin-menu-card"
+                >
+
+                    <span>
+                        📦
+                    </span>
+
+                    <h3>
+                        Pedidos
+                    </h3>
+
+                    <p>
+                        Consultar y administrar pedidos.
+                    </p>
+
+                </a>
+
+
+                <a
+                    href="usuarios.html"
+                    class="admin-menu-card"
+                >
+
+                    <span>
+                        👥
+                    </span>
+
+                    <h3>
+                        Usuarios
+                    </h3>
+
+                    <p>
+                        Consultar los usuarios registrados.
+                    </p>
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            © 2026 Urban Style
+        </p>
+
+        <p>
+            Panel de Administración
+        </p>
+
+    </footer>
+
+
+    <script src="../js/admin.js"></script>
+
+</body>
+
+</html>
+

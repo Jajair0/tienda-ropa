@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar usuarios - Urban Style</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+
+    <header>
+        <h1>Urban Style | Admin</h1>
+        <nav>
+            <a href="index.html">Dashboard</a>
+            <a href="productos.html">Productos</a>
+            <a href="pedidos.html">Pedidos</a>
+            <a href="../index.html">Tienda</a>
+            <button class="btn-cerrar-sesion" onclick="cerrarSesionAdmin()">
+                Cerrar sesión
+            </button>
+        </nav>
+    </header>
+
+    <main class="admin-container">
+
+        <section class="admin-titulo">
+            <div>
+                <p class="admin-etiqueta">PANEL DE ADMINISTRACIÓN</p>
+                <h2>Gestionar usuarios</h2>
+                <p>Consulta los clientes y administradores registrados en Urban Style.</p>
+            </div>
+        </section>
+
+        <section class="admin-menu">
+            <div class="admin-titulo">
+                <div>
+                    <h2>Usuarios registrados</h2>
+                    <p>Listado de cuentas registradas en la tienda.</p>
+                </div>
+                <button type="button" id="btn-actualizar-usuarios">
+                    Actualizar lista
+                </button>
+            </div>
+
+            <div class="admin-tabla-contenedor">
+                <table class="admin-tabla admin-tabla-usuarios">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre completo</th>
+                            <th>Correo electrónico</th>
+                            <th>Rol</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-usuarios">
+                        <tr>
+                            <td colspan="4">Cargando usuarios...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p id="mensaje-usuarios" role="status"></p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Urban Style</p>
+        <p>Panel de Administración</p>
+    </footer>
+
+    <script>
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+
+        if (!usuario || usuario.rol !== 'ADMIN') {
+            alert('No tienes permisos para acceder a esta página.');
+            window.location.href = '../index.html';
+        }
+
+        function cerrarSesionAdmin() {
+            localStorage.removeItem('usuario');
+            window.location.href = '../index.html';
+        }
+
+        async function cargarUsuarios() {
+            const tabla = document.getElementById('tabla-usuarios');
+            const mensaje = document.getElementById('mensaje-usuarios');
+
+            tabla.innerHTML = `
+                <tr><td colspan="4">Cargando usuarios...</td></tr>
+            `;
+            mensaje.textContent = '';
+
+            try {
+                const respuesta = await fetch(
+                    'http://localhost:3000/api/admin/usuarios'
+                );
+
+                const usuarios = await respuesta.json();
+
+                if (!respuesta.ok) {
+                    throw new Error(
+                        usuarios.mensaje || 'No se pudieron cargar los usuarios.'
+                    );
+                }
+
+                if (!Array.isArray(usuarios) || usuarios.length === 0) {
+                    tabla.innerHTML = `
+                        <tr><td colspan="4">No hay usuarios registrados.</td></tr>
+                    `;
+                    return;
+                }
+
+                tabla.innerHTML = '';
+
+                usuarios.forEach(persona => {
+                    const fila = document.createElement('tr');
+
+                    const id = document.createElement('td');
+                    id.textContent = persona.id_usuario;
+
+                    const nombre = document.createElement('td');
+                    nombre.textContent =
+                        [persona.nombre, persona.apellido]
+                            .filter(Boolean)
+                            .join(' ') || 'Sin nombre';
+
+                    const correo = document.createElement('td');
+                    correo.textContent =
+                        persona.correo || persona.correo_electronico || '-';
+
+                    const rol = document.createElement('td');
+                    rol.textContent = persona.rol || 'CLIENTE';
+
+                    fila.append(id, nombre, correo, rol);
+                    tabla.appendChild(fila);
+                });
+
+            } catch (error) {
+                console.error('Error al cargar usuarios:', error);
+
+                tabla.innerHTML = `
+                    <tr>
+                        <td colspan="4">
+                            No se pudieron cargar los usuarios.
+                        </td>
+                    </tr>
+                `;
+
+                mensaje.textContent =
+                    'Verifica que el servidor esté iniciado y que exista la ruta de usuarios.';
+            }
+        }
+
+        document
+            .getElementById('btn-actualizar-usuarios')
+            .addEventListener('click', cargarUsuarios);
+
+        cargarUsuarios();
+    </script>
+
+</body>
+</html>
